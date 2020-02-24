@@ -33,3 +33,5 @@ sqlite3 security.db
 
 
 mv security.db /var/lib/motion/
+chmod 664 /var/lib/motion/security.db
+chown root:motion /var/lib/motion/security.db
