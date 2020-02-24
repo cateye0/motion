@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+# useful script for sync motion data on local sqlite3 db to remote mysql db
+
 use strict;
 use DBI;
 
