@@ -1,0 +1,36 @@
+#####################################
+
+# exiftool -time:all -G1 -a -s /var/www/html/cam/2020-02-24-214845-01.mp4
+[System]        FileModifyDate                  : 2020:02:24 21:49:47+01:00
+[System]        FileAccessDate                  : 2020:02:24 21:48:46+01:00
+[System]        FileInodeChangeDate             : 2020:02:24 21:49:47+01:00
+[QuickTime]     CreateDate                      : 0000:00:00 00:00:00
+[QuickTime]     ModifyDate                      : 0000:00:00 00:00:00
+[Track1]        TrackCreateDate                 : 0000:00:00 00:00:00
+[Track1]        TrackModifyDate                 : 0000:00:00 00:00:00
+[Track1]        MediaCreateDate                 : 0000:00:00 00:00:00
+[Track1]        MediaModifyDate                 : 0000:00:00 00:00:00
+
+
+#####################################
+
+[1:ml1] [NTC] [EVT] [Feb 24 21:58:43] event_newfile: File of type 1 saved to: /var/www/html/cam/2020-02-24-215742-03.jpg
+[1:ml1] [WRN] [DBL] [Feb 24 21:58:43] do_sql_query: Ignoring empty sql query
+[1:ml1] [DBG] [EVT] [Feb 24 21:58:43] exec_command: Executing external command '/var/lib/motion/motion_video_meta_fix.sh /var/www/html/cam/2020-02-24-215740-03.mp4'
+[1:ml1] [NTC] [ALL] [Feb 24 21:58:43] mlp_actions: End of event 3
+[1:ml1] [WRN] [DBL] [Feb 24 21:58:43] do_sql_query: Ignoring empty sql query
+
+
+#####################################
+
+# exiftool -time:all -G1 -a -s /var/www/html/cam/2020-02-24-215740-03.mp4
+[System]        FileModifyDate                  : 2020:02:24 21:58:43+01:00
+[System]        FileAccessDate                  : 2020:02:24 21:58:43+01:00
+[System]        FileInodeChangeDate             : 2020:02:24 21:58:46+01:00
+[QuickTime]     CreateDate                      : 2020:02:24 21:58:43
+[QuickTime]     ModifyDate                      : 0000:00:00 00:00:00
+[Track1]        TrackCreateDate                 : 0000:00:00 00:00:00
+[Track1]        TrackModifyDate                 : 0000:00:00 00:00:00
+[Track1]        MediaCreateDate                 : 0000:00:00 00:00:00
+[Track1]        MediaModifyDate                 : 0000:00:00 00:00:00
+[XMP-xmp]       CreateDate                      : 2020:02:24 21:58:43+01:00
