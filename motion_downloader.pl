@@ -50,7 +50,7 @@ my $url = "http://10.10.10.20/cam/${fullpath}";
 #	print "$url\n";
 
 my $ff = File::Fetch->new(uri => $url);
-my $file = $ff->fetch(to => '/home/www/cateye.hu/cam/') or die $ff->error;
+my $file = $ff->fetch(to => '/home/www/sitedir/cam/') or die $ff->error;
 
 
 my $statement = "update security2 set downloaded='1' where filename = ?";
