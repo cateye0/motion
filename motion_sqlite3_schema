@@ -1,0 +1,35 @@
+## exampe output
+
+sqlite>   CREATE TABLE security (
+   ...>   id INTEGER PRIMARY KEY,
+   ...>   camera int(11) DEFAULT NULL,
+   ...>   filename char(80) NOT NULL,
+   ...>   frame int(11) DEFAULT NULL,
+   ...>   file_type int(11) DEFAULT NULL,
+   ...>   time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   ...>   text_event char(40) DEFAULT NULL,
+   ...>   downloaded int(1) NOT NULL DEFAULT 0
+   ...>  );
+sqlite>
+
+## /exampe output
+
+sqlite3 security.db
+
+
+  CREATE TABLE security (
+  id INTEGER PRIMARY KEY,
+  camera int(11) DEFAULT NULL,
+  filename char(80) NOT NULL,
+  frame int(11) DEFAULT NULL,
+  file_type int(11) DEFAULT NULL,
+  time_stamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  text_event char(40) DEFAULT NULL,
+  downloaded int(1) NOT NULL DEFAULT 0
+ );
+
+#test data
+#sqlite> insert into security(camera, filename, frame, file_type, time_stamp, text_event) values('0', '/var/www/html/cam/2020-01-09-131301-01.jpg', '2', '1', '2020-01-09 22:38:36', '20200109131301')
+
+
+mv security.db /var/lib/motion/
