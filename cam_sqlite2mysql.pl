@@ -2,8 +2,18 @@
 
 # useful script for sync motion data on local sqlite3 db to remote mysql db
 
+use warnings;
 use strict;
 use DBI;
+
+# required libfile-nfslock-perl - perl module to do NFS (or not) locking package
+use Fcntl qw(LOCK_EX LOCK_NB);
+use File::NFSLock;
+
+# Try to get an exclusive lock on myself.
+my $lock = File::NFSLock->new($0, LOCK_EX|LOCK_NB);
+die "$0 is already running!\n" unless $lock;
+
 
 my $sqlitedsn = "dbi:SQLite:dbname=/var/lib/motion/security.db";
 my $sqliteuser = '';
@@ -31,6 +41,7 @@ my $user = "motion";
 my $password = "secret";
 
 
+
 my $dbh = DBI->connect($dsn, $user, $password)
     or die "Can't connect to database: $DBI::errstr";
 
@@ -38,14 +49,14 @@ my $dbh = DBI->connect($dsn, $user, $password)
 my $mysqlinsert = "insert into security2(camera, filename, frame, file_type, time_stamp, text_event) values(?, ?, ?, ?, ?, ?)";
 
 
-my $rv  = $dbh->do($mysqlinsert, undef, $camera, $filename, $frame, $file_type, $time_stamp, $text_event) or die "Can't do statement: $DBI::errstr";
+my $mysqlrv  = $dbh->do($mysqlinsert, undef, $camera, $filename, $frame, $file_type, $time_stamp, $text_event) or die "Can't do statement: $DBI::errstr";
 #    print "$mysqlinsert\n";
 
 
 
 my $sqliteupdate = "update security set downloaded='1' where filename = ?";
 
-my $rv  = $sqlitedbh->do($sqliteupdate, undef, $filename) or die "Can't do statement: $DBI::errstr";
+my $sqliterv  = $sqlitedbh->do($sqliteupdate, undef, $filename) or die "Can't do statement: $DBI::errstr";
 #    print "$sqliteupdate\n";
 
 # check for problems which may have terminated the fetch early
@@ -57,9 +68,8 @@ $dbh->disconnect();
 }
 
 # check for problems which may have terminated the fetch early
-warn $sqliteDBI::errstr if $sqliteDBI::err;
+#warn $sqliteDBI::errstr if $sqliteDBI::err;
 
 $sqlitesth->finish();
 $sqlitedbh->disconnect();
-
 
