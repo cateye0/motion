@@ -177,7 +177,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 if ($sync_options['postersec'] > $exif['playtime_seconds'])
                 {
                     $warnings[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
-                    $sync_options['postersec'] = (int)$exif['playtime_seconds'];
+                    $sync_options['postersec'] = (int)$exif['playtime_seconds']-1;
                 }
 		/* default output to JPG */
                 $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
