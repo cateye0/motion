@@ -1,6 +1,9 @@
-# motion
-Motion, a software motion detector. Home page: https://motion-project.github.io/
-
+# motion and Piwigo
+-
+Motion, a software motion detector. Home page: https://motion-project.github.io/  
+-
+Manage your photos with Piwigo, a full featured open source photo gallery application for the web. Star us on Github! More than 200 plugins and themes available. Join us and contribute! https://piwigo.org  
+-
 
 Environment:
 
