@@ -37,20 +37,29 @@ $sync_options = array(
     'poster'            => true,
     'postersec'         => 4,
     'output'            => 'jpg',
-    'posteroverlay'     => false,
-    'posteroverwrite'   => true,
+    'posteroverlay'     => true,
+    'posteroverwrite'   => false,
     'thumb'             => false,
     'thumbsec'          => 5,
     'thumbsize'         => "120x68",
-    'simulate'          => true,
+    'simulate'          => false,
     'cat_id'            => 0,
     'subcats_included'  => true,
 );
 
-if ( isset($_POST['submit']) and isset($_POST['postersec']) )
+// Merge default value with user configuration
+if (isset($conf['vjs_sync']))
 {
+    $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options);
+}
+
+if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
     // Override default value from the form
     $sync_options_form = array(
+        'mediainfo'         => $_POST['mediainfo'],
+        'ffmpeg'            => $_POST['ffmpeg'],
+        'exiftool'          => $_POST['exiftool'],
+        'ffprobe'           => $_POST['ffprobe'],
         'metadata'          => isset($_POST['metadata']),
         'poster'            => isset($_POST['poster']),
         'postersec'         => $_POST['postersec'],
@@ -66,8 +75,34 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     );
 
     // Merge default value with user configuration
-    $sync_options = array_merge($sync_options, $sync_options_form);
+    $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_form);
 
+    // Update config to DB
+    conf_update_param('vjs_sync', serialize($sync_options));
+}
+
+// Check dependencies
+$warnings = array();
+
+// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
+include(dirname(__FILE__).'/../include/function_dependencies.php');
+
+if ($sync_options['posteroverlay'] and !function_exists('gd_info'))
+{
+        $warnings[] = "GD library is missing to add overlay movie frame";
+}
+if ($sync_options['metadata'] and $sync_binaries['mediainfo'] and !class_exists('SimpleXMLElement'))
+{
+        $warnings[] = "XML library is missing to use mediainfo";
+}
+
+$template->assign('sync_warnings', $warnings);
+$template->assign($sync_options); // send config value to template
+$template->assign('sync_options', $sync_options); // send config value to template
+$template->assign('sync_binaries', $sync_binaries); // send external tools binary to template
+
+if ( isset($_POST['submit']) and isset($_POST['postersec']) )
+{
     // Filter on existing poster
     $OVERWRITE = "";
     if (!$sync_options['posteroverwrite'])
@@ -106,9 +141,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     // Send sync result to template
     $template->assign('sync_errors', $errors );
     $template->assign('sync_warnings', $warnings );
-    if (isset($sync_infos)) {
-	$template->assign('sync_infos', $sync_infos );
-    }
+    $template->assign('sync_infos', $infos );
 
     // Send result to templates
     $template->assign(
@@ -122,9 +155,6 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
             'NB_WARNINGS'               => count($warnings),
     ));
 }
-
-// Send user options result to template
-$template->assign($sync_options);
 
 /* Get statistics */
 // All videos with supported extensions by VideoJS
@@ -142,11 +172,11 @@ list($nb_videos_geotagged) = pwg_db_fetch_row( pwg_query($query) );
 
 if (isset($_POST['cat_id']) and is_numeric($_POST['cat_id']))
 {
-	$cat_selected = array($sync_options['cat_id']);
+        $cat_selected = array($sync_options['cat_id']);
 }
 else
 {
-	$cat_selected = array();
+        $cat_selected = array();
 }
 $query = 'SELECT id, CONCAT(name, IF(dir IS NULL, " (V)", "") ) AS name, uppercats, global_rank  FROM '.CATEGORIES_TABLE;
 display_select_cat_wrapper($query,
