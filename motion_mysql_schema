@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 24, 2020 at 02:27 PM
+-- Generation Time: Feb 27, 2020 at 12:12 PM
 -- Server version: 10.3.18-MariaDB-0+deb10u1
 -- PHP Version: 7.3.11-1~deb10u1
 
@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `security`
+-- Table structure for table `security2`
 --
 
 CREATE TABLE `security2` (
@@ -32,9 +32,10 @@ CREATE TABLE `security2` (
   `filename` char(80) NOT NULL,
   `frame` int(11) DEFAULT NULL,
   `file_type` int(11) DEFAULT NULL,
-  `time_stamp` timestamp NOT NULL DEFAULT current_timestamp,
+  `time_stamp` timestamp NOT NULL DEFAULT current_timestamp(),
   `text_event` char(40) DEFAULT NULL,
-  `downloaded` int(1) NOT NULL DEFAULT 0
+  `downloaded` int(1) NOT NULL DEFAULT 0,
+  `published` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -42,7 +43,7 @@ CREATE TABLE `security2` (
 --
 
 --
--- Indexes for table `security`
+-- Indexes for table `security2`
 --
 ALTER TABLE `security2`
   ADD PRIMARY KEY (`id`);
@@ -52,10 +53,10 @@ ALTER TABLE `security2`
 --
 
 --
--- AUTO_INCREMENT for table `security`
+-- AUTO_INCREMENT for table `security2`
 --
 ALTER TABLE `security2`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
